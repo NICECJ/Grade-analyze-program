@@ -65,6 +65,8 @@ cd code
 python -m venv venv
 # 激活虚拟环境 (Windows)
 venv\Scripts\activate
+# 激活虚拟环境 (Linux/Mac)
+source venv/bin/activate
 # 安装依赖
 pip install -r requirements.txt
 ```
@@ -74,6 +76,8 @@ pip install -r requirements.txt
 # 复制环境配置文件
 cp .env.example .env
 # 编辑 .env 文件，配置数据库连接信息
+# 初始化数据库
+python init_db_v2.py
 ```
 
 4. **前端设置**
@@ -87,7 +91,7 @@ npm install
 # 启动后端 (在 code 目录下)
 python start_backend.py
 
-# 启动前端 (在 code/frontend 目录下)
+# 启动前端 (在 code/frontend 目录下，新开一个终端)
 npm run dev
 ```
 
@@ -156,17 +160,34 @@ Grade-analyze-program/
 - 支持校级、市级、省级排名
 - 支持考试类型和选科组合
 
-## 开发说明
+## 服务器部署
 
-### 后端开发
-- 使用FastAPI框架，支持自动API文档生成
-- 采用异步编程模式，提高性能
-- 使用SQLAlchemy ORM，支持多种数据库
+### Windows服务器
+1. 安装Python 3.8+、Node.js 16+、MySQL
+2. 按照上述安装步骤配置项目
+3. 使用PM2或Windows服务实现后台运行
 
-### 前端开发
-- 使用Vue 3 Composition API
-- Element Plus提供UI组件
-- ECharts实现数据可视化
+### Linux服务器
+1. 安装Python 3.8+、Node.js 16+、MySQL
+2. 按照上述安装步骤配置项目
+3. 使用systemd或PM2实现后台运行
+
+### 后台运行（可选）
+使用PM2管理进程：
+```bash
+# 安装PM2
+npm install -g pm2
+
+# 启动后端
+pm2 start "python start_backend.py" --name "grade-backend"
+
+# 启动前端
+pm2 start "npm run dev" --name "grade-frontend"
+
+# 保存配置
+pm2 save
+pm2 startup
+```
 
 ## 贡献指南
 
